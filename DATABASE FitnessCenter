@@ -114,3 +114,19 @@ GROUP BY m.first_name, m.last_name
 HAVING COUNT(e.class_id) > 1
 ORDER BY num_classes DESC;
 
+--
+SELECT m.first_name, m.last_name, COUNT(e.class_id) AS num_classes
+FROM Members m
+JOIN Enrollments e ON m.member_id = e.member_id
+GROUP BY m.first_name, m.last_name
+HAVING COUNT(e.class_id) > 1
+ORDER BY num_classes DESC;
+
+--
+SELECT c.class_name, COUNT(e.member_id) * c.price AS total_revenue
+FROM Classes c
+LEFT JOIN Enrollments e ON c.class_id = e.class_id
+GROUP BY c.class_name, c.price
+ORDER BY total_revenue DESC;
+
+
