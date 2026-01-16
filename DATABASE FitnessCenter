@@ -73,3 +73,44 @@ INSERT INTO Enrollments (member_id, class_id, enrollment_date) VALUES
 (3, 4, '2023-06-15'),
 (4, 4, '2023-06-20'),
 (5, 5, '2023-06-25');
+
+-- 
+SELECT c.class_name, t.first_name, t.last_name
+FROM Classes c
+JOIN Trainers t ON c.trainer_id = t.trainer_id;
+
+--
+SELECT m.first_name, m.last_name, c.class_name
+FROM Enrollments e
+JOIN Members m ON e.member_id = m.member_id
+JOIN Classes c ON e.class_id = c.class_id;
+
+--
+SELECT c.class_name, COUNT(e.member_id) AS num_members
+FROM Classes c
+LEFT JOIN Enrollments e ON c.class_id = e.class_id
+GROUP BY c.class_name
+ORDER BY num_members DESC;
+
+--
+SELECT c.class_name, COUNT(e.member_id) * c.price AS total_revenue
+FROM Classes c
+LEFT JOIN Enrollments e ON c.class_id = e.class_id
+GROUP BY c.class_name, c.price
+ORDER BY total_revenue DESC;
+
+--
+SELECT t.first_name, t.last_name, COUNT(c.class_id) AS num_classes
+FROM Trainers t
+LEFT JOIN Classes c ON t.trainer_id = c.trainer_id
+GROUP BY t.first_name, t.last_name
+ORDER BY num_classes DESC;
+
+--
+SELECT m.first_name, m.last_name, COUNT(e.class_id) AS num_classes
+FROM Members m
+JOIN Enrollments e ON m.member_id = e.member_id
+GROUP BY m.first_name, m.last_name
+HAVING COUNT(e.class_id) > 1
+ORDER BY num_classes DESC;
+
