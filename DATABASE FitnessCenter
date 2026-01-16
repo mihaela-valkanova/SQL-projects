@@ -1,0 +1,75 @@
+--new table
+CREATE TABLE Trainers (
+Trainer_ID INT IDENTITY PRIMARY KEY,
+First_Name NVARCHAR(50) NOT NULL,
+Last_Name NVARCHAR(50) NOT NULL,
+Specialty NVARCHAR(50),
+Hire_Year DATETIME 
+);
+
+--insert data 
+INSERT INTO Trainers (First_Name, Last_Name, Specialty, Hire_Year) VALUES
+('Ivan', 'Petrov', 'Personal Training', 2018),
+('Maria', 'Georgieva', 'Yoga', 2020),
+('Nikolay', 'Dimitrov', 'CrossFit', 2017),
+('Elena', 'Stoyanova', 'Pilates', 2021),
+('Georgi', 'Ivanov', 'Boxing', 2019);
+
+--new table 
+CREATE TABLE Members (
+Member_ID INT IDENTITY PRIMARY KEY,
+First_Name NVARCHAR(50) NOT NULL,
+Last_Name NVARCHAR(50) NOT NULL,
+Email NVARCHAR(50) UNIQUE,
+Join_Date DATETIME
+);
+
+--insert data 
+INSERT INTO Members (First_Name, Last_Name, Email, Join_Date) VALUES
+('Ivan', 'Kolev', 'ivan.kolev@email.com', '2023-01-10'),
+('Maria', 'Petrova', 'maria.petrova@email.com', '2023-02-15'),
+('Georgi', 'Stoyanov', 'georgi.stoyanov@email.com', '2023-03-05'),
+('Elena', 'Marinova', 'elena.marinova@email.com', '2023-04-20'),
+('Petar', 'Nikolov', 'petar.nikolov@email.com', '2023-05-12');
+
+--new table 
+CREATE TABLE Classes (
+Class_ID INT IDENTITY PRIMARY KEY,
+Class_Name NVARCHAR(50) NOT NULL,
+Price DECIMAL(10,2) NOT NULL,
+Trainer_ID INT,
+
+FOREIGN KEY(Trainer_ID) REFERENCES Trainers(Trainer_ID)
+);
+
+--insert data 
+INSERT INTO Classes (Class_Name, Price, Trainer_id) VALUES
+('Fitness Basics', 25.00, 1),
+('Yoga Flow', 30.00, 2),
+('CrossFit Advanced', 35.00, 3),
+('Pilates Core', 28.00, 4),
+('Boxing Training', 32.00, 5);
+
+--new table 
+CREATE TABLE Enrollments (
+    member_id INT NOT NULL,
+    class_id INT NOT NULL,
+    enrollment_date DATE NOT NULL,
+    CONSTRAINT PK_Enrollments PRIMARY KEY (member_id, class_id),
+    CONSTRAINT FK_Enrollments_Members
+        FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    CONSTRAINT FK_Enrollments_Classes
+        FOREIGN KEY (class_id) REFERENCES Classes(class_id)
+);
+
+--insert data 
+INSERT INTO Enrollments (member_id, class_id, enrollment_date) VALUES
+(1, 1, '2023-06-01'),
+(1, 2, '2023-06-05'),
+(2, 2, '2023-06-03'),
+(2, 3, '2023-06-10'),
+(3, 1, '2023-06-02'),
+(3, 3, '2023-06-12'),
+(3, 4, '2023-06-15'),
+(4, 4, '2023-06-20'),
+(5, 5, '2023-06-25');
